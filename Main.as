@@ -4,7 +4,6 @@ package
 	import net.flashpunk.debug.*;
 	import net.flashpunk.utils.*;
 	
-	[SWF(width = "640", height = "480", backgroundColor="#000000")]
 	public class Main extends Engine
 	{
 		public function Main () 
