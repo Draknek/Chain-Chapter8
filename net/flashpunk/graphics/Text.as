@@ -50,6 +50,11 @@
 		 */
 		public var resizable: Boolean;
 		
+		public var stringLength:int;
+		
+		public var textDelay:int = 2;
+		public var delay:int;
+		
 		/**
 		 * Constructor.
 		 * @param	text		Text to display.
@@ -110,7 +115,9 @@
 			_form.align = _align;
 			_form.leading = _leading;
 			_field.defaultTextFormat = _form;
-			_field.text = _text = text;
+			_field.text = "";
+			stringLength = 0;
+			delay = textDelay;
 			_width = width || _field.textWidth + 4;
 			_height = height || _field.textHeight + 4;
 			_source = new BitmapData(_width, _height, true, 0);
@@ -118,6 +125,9 @@
 			updateTextBuffer();
 			this.x = x;
 			this.y = y;
+			
+			this.text = text;
+			active = true;
 			
 			if (options)
 			{
@@ -262,6 +272,21 @@
 			super.updateColorTransform();
 		}
 		
+		public override function update ():void
+		{
+			if (stringLength >= _text.length) return;
+			
+			delay--;
+			
+			if (delay < 0) {
+				delay = textDelay;
+				stringLength++;
+				
+				_field.text = _text.substring(0, stringLength);
+				updateTextBuffer();
+			}
+		}
+		
 		/** Updates the text buffer, which is the source for the image buffer. */
 		public function updateTextBuffer():void
 		{
@@ -353,7 +378,28 @@
 		public function set text(value:String):void
 		{
 			if (_text == value && !_richText) return;
-			_field.text = _text = value;
+			
+			var i:int = 0;
+			var j:int = 0;
+			
+			while ((i = value.indexOf("{WAIT", i)) != -1) {
+				j = value.indexOf("}", i);
+				var wait:int = int(value.substring(i+5, j));
+				var after:String = value.substring(j+1);
+				value = value.substring(0, i);
+				
+				for (j = 0; j < wait; j++) {
+					value += "\uFEFF";
+				}
+				
+				value += after;
+				
+				i += wait;
+			}
+			
+			_text = value;
+			_field.text = "";
+			stringLength = 0;
 			if (_richText) {
 				_richText = null;
 				super.updateColorTransform();

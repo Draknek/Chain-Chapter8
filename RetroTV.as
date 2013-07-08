@@ -27,6 +27,9 @@
 		public var usePreBlurGreen:Boolean;
 		public var usePreBlurBlue:Boolean;
 		
+		public var distortScale:Number = 1.0;
+		public var warpChange:int;
+		
 		public var TVPic:Bitmap;
 		private var sceneData:BitmapData;
 		private var TVPicData:BitmapData;
@@ -53,7 +56,7 @@
 			
 			scene = new Bitmap(inBuffer);
 			
-			noiseAmount = 45;
+			noiseAmount = 10;
 			
 			usePreBlurRed = false;
 			usePreBlurGreen = false;
@@ -74,7 +77,7 @@
 			minPhosphorLevel = 16;
 			raiseFloor = new ColorTransform(1-minPhosphorLevel/255,1-minPhosphorLevel/255,1-minPhosphorLevel/255,1,minPhosphorLevel,minPhosphorLevel,minPhosphorLevel,0);
 			
-			_brightenFactor = 1.15;
+			_brightenFactor = 1.0;//25;
 			brighten = new ColorTransform(_brightenFactor,_brightenFactor,_brightenFactor);
 			
 			warping = true;
@@ -144,6 +147,8 @@
 		
 		
 		private function createDisplacementMap():void {
+			warpChange = Math.random()*1000 + 60;
+			
 			var numLines:Number = 8;
 			var lineThicknessMax:Number = 4;
 			var i:Number;
@@ -180,8 +185,14 @@
 			
 			//update warping amount
 			if (warping) {
-				dmfilter.scaleX = 25*(0.5+0.5*Math.cos(getTimer()*0.001027+Math.cos(getTimer()*0.001324)))*(0.5+0.5*Math.cos(getTimer()*0.005227+Math.cos(getTimer()*0.072324)));
+				warpChange--;
+				
+				dmfilter.scaleX = distortScale*25*(0.5+0.5*Math.cos(getTimer()*0.001027+Math.cos(getTimer()*0.001324)))*(0.5+0.5*Math.cos(getTimer()*0.005227+Math.cos(getTimer()*0.072324)));
 				if (dmfilter.scaleX < 5) {
+					if (warpChange < 0) {
+						createDisplacementMap();
+					}
+					
 					dmfilter.scaleX = 5;
 				}
 			}

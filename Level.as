@@ -14,6 +14,8 @@ package
 		public function Level ()
 		{
 			add(new Player());
+			
+			addGraphic(new Text("Chapter 8{WAIT20}\nLogging in{WAIT10}.{WAIT10}.{WAIT10}.{WAIT20}\n> █", 0, 0, {color: 0xd2f6a9}));
 		}
 		
 		public override function update (): void
@@ -25,7 +27,7 @@ package
 		{
 			super.render();
 			
-			Draw.rect((Math.sin(getTimer()*0.001)+1) * FP.width*0.5, 50, 50, 50, 0xFF0000);
+			Draw.rect((Math.sin(0*0.001)+1) * FP.width*0.5, 50, 50, 50, 0xFF0000);
 		}
 	}
 }
