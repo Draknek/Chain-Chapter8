@@ -49,7 +49,7 @@
 			_filteredVol = Math.max(0, _vol * getVolume(_type));
 			_transform.pan = _filteredPan;
 			_transform.volume = _filteredVol;
-			_channel = _sound.play(0, 0, _transform);
+			_channel = _sound.play(0, int.MAX_VALUE, _transform);
 			if (_channel)
 			{
 				addPlaying();

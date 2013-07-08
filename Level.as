@@ -9,13 +9,16 @@ package
 	
 	public class Level extends World
 	{
-		//[Embed(source="images/bg.png")] public static const BgGfx: Class;
+		[Embed(source="audio/sfx.swf#hum")] public static const HumSfx: Class;
 		
 		public function Level ()
 		{
 			add(new Player());
 			
-			addGraphic(new Text("Chapter 8{WAIT20}\nLogging in{WAIT10}.{WAIT10}.{WAIT10}.{WAIT20}\n> █", 0, 0, {color: 0xd2f6a9}));
+			addGraphic(new Text("Chapter 8{WAIT20}\nLogging in{WAIT10}.{WAIT10}.{WAIT10}.{WAIT20}\n> @", 0, 0, {color: 0xd2f6a9}));
+			
+			var hum:Sfx = new Sfx(HumSfx);
+			hum.loop();
 		}
 		
 		public override function update (): void
