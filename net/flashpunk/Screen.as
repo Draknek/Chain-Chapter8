@@ -18,7 +18,7 @@
 		 */
 		public function Screen() 
 		{
-			FP.engine.addChild(_sprite);
+			//FP.engine.addChild(_sprite);
 			resize();
 			update();
 		}
@@ -30,17 +30,17 @@
 		{
 			if (_bitmap[0]) {
 				_sprite.removeChild(_bitmap[0]);
-				_sprite.removeChild(_bitmap[1]);
+				//_sprite.removeChild(_bitmap[1]);
 				
 				_bitmap[0].bitmapData.dispose();
-				_bitmap[1].bitmapData.dispose();
+				//_bitmap[1].bitmapData.dispose();
 			}
 			
 			// create screen buffers
 			_bitmap[0] = new Bitmap(new BitmapData(FP.width, FP.height, false, _color), PixelSnapping.NEVER);
-			_bitmap[1] = new Bitmap(new BitmapData(FP.width, FP.height, false, _color), PixelSnapping.NEVER);
+			//_bitmap[1] = new Bitmap(new BitmapData(FP.width, FP.height, false, _color), PixelSnapping.NEVER);
 			_sprite.addChild(_bitmap[0]).visible = true;
-			_sprite.addChild(_bitmap[1]).visible = false;
+			//_sprite.addChild(_bitmap[1]).visible = false;
 			FP.buffer = _bitmap[0].bitmapData;
 			_width = FP.width;
 			_height = FP.height;
@@ -52,6 +52,7 @@
 		 */
 		public function swap():void
 		{
+			return;
 			_current = 1 - _current;
 			FP.buffer = _bitmap[_current].bitmapData;
 		}
@@ -70,6 +71,7 @@
 		 */
 		public function redraw():void
 		{
+			return;
 			// refresh the buffers
 			_bitmap[_current].visible = true;
 			_bitmap[1 - _current].visible = false;
@@ -188,7 +190,7 @@
 		 * Whether screen smoothing should be used or not.
 		 */
 		public function get smoothing():Boolean { return _bitmap[0].smoothing; }
-		public function set smoothing(value:Boolean):void { _bitmap[0].smoothing = _bitmap[1].smoothing = value; }
+		public function set smoothing(value:Boolean):void { _bitmap[0].smoothing = value; }
 		
 		/**
 		 * Width of the screen.

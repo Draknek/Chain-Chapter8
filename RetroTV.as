@@ -5,13 +5,13 @@
 	import flash.filters.*;
 	import flash.utils.getTimer;
 	
-	public class RetroTV extends Sprite {
+	public class RetroTV {
 		
 		public var phosphorWidth:Number;
 		public var  _brightenFactor:Number;
 		public var preBlur:BlurFilter;
 		public var warping:Boolean;
-		public var scene:Sprite;
+		public var scene:DisplayObject;
 		public var sceneWidth:Number;
 		public var sceneHeight:Number;
 		public var _redOffsetX:Number;
@@ -27,14 +27,14 @@
 		public var usePreBlurGreen:Boolean;
 		public var usePreBlurBlue:Boolean;
 		
-		private var TVPic:Bitmap;
+		public var TVPic:Bitmap;
 		private var sceneData:BitmapData;
 		private var TVPicData:BitmapData;
 		private var origin:Point;
 		private var verticalLine:Rectangle;
 		private var destPoint:Point;
 		private var noiseData:BitmapData;
-		private var noiseBitmap:Bitmap;
+		public var noiseBitmap:Bitmap;
 		private var raiseFloor:ColorTransform;
 		private var dmfilter:DisplacementMapFilter;
 		private var redOffsetMatrix:Matrix;
@@ -43,24 +43,15 @@
 		private var brighten:ColorTransform;
 		
 		
-		public function RetroTV(sceneW=200,sceneH=150,phosphorW=1):void {
-			
-			super();
-			
+		public function RetroTV(inBuffer:BitmapData, phosphorW:int=1):void {
 			phosphorWidth = phosphorW;
 			//weird things happen if phosphorWidth is not set to an integer > 0.
 			phosphorWidth = Math.max(1, Math.floor(phosphorWidth));
 			
-			sceneWidth = sceneW;
-			sceneHeight = sceneH;
+			sceneWidth = inBuffer.width;
+			sceneHeight = inBuffer.height;
 			
-			//The 'scene' is the sprite that will be the source image for the TV effect.
-			//you can add any display object (including video) to the scene as a child.
-			scene = new Sprite();
-			//make a background for the scene to make empty parts of the sprite black.
-			scene.graphics.beginFill(0x000000);
-			scene.graphics.drawRect(0,0,sceneWidth,sceneHeight);
-			scene.graphics.endFill();
+			scene = new Bitmap(inBuffer);
 			
 			noiseAmount = 45;
 			
@@ -103,8 +94,6 @@
 			noiseBitmap.scaleX = phosphorWidth;
 			noiseBitmap.scaleY = 3*phosphorWidth;
 			
-			this.addChild(TVPic);
-			this.addChild(noiseBitmap);
 			//We use the ADD blend mode so that the noiseBitmap will lighten underlying pixels.
 			noiseBitmap.blendMode = BlendMode.ADD;
 			

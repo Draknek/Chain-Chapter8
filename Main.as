@@ -6,11 +6,16 @@ package
 	
 	public class Main extends Engine
 	{
+		public var tv:RetroTV;
 		public function Main () 
 		{
 			super(200, 150, 60, true);
-			FP.screen.scale = 3;
 			FP.world = new Level();
+			
+			tv = new RetroTV(FP.buffer);
+			
+			addChild(tv.TVPic);
+			addChild(tv.noiseBitmap);
 		}
 		
 		public override function init (): void
@@ -26,6 +31,12 @@ package
 			}
 			
 			super.update();
+		}
+		
+		public override function render (): void
+		{
+			super.render();
+			tv.update();
 		}
 	}
 }
