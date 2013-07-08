@@ -8,7 +8,8 @@ package
 	{
 		public function Main () 
 		{
-			super(640, 480, 60, true);
+			super(200, 150, 60, true);
+			FP.screen.scale = 3;
 			FP.world = new Level();
 		}
 		

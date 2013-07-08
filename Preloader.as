@@ -6,7 +6,7 @@ package
 	import flash.events.*;
 	import flash.utils.getDefinitionByName;
 
-	[SWF(width = "640", height = "480", backgroundColor="#000000")]
+	[SWF(width = "600", height = "450", backgroundColor="#000000")]
 	public class Preloader extends Sprite
 	{
 		// Change these values
@@ -36,7 +36,7 @@ package
 		private var sw:int;
 		private var sh:int;
 		
-		private var testLoad:Boolean = true;
+		private var testLoad:Boolean = false;
 		private var testLoadAmount:Number = 0;
 		
 		[Embed(source = 'net/flashpunk/graphics/04B_03__.TTF', embedAsCFF="false", fontFamily = 'default')]
