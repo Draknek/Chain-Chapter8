@@ -209,6 +209,8 @@ package
 			}
 		}
 		
+		public static const solid:String = "|-+*";
+		
 		public function doPlayerInput ():void
 		{
 			var dx:int = int(Input.pressed(Key.RIGHT)) - int(Input.pressed(Key.LEFT));
@@ -216,11 +218,17 @@ package
 			
 			if (dx && dy) return;
 			
-			player.x += dx;
-			player.y += dy;
+			var ix:int = player.x + dx;
+			var iy:int = player.y + dy;
+			
+			var c:String = grid[iy][ix];
+			
+			if (solid.indexOf(c) >= 0) return;
+			
+			player.x = ix;
+			player.y = iy;
 			
 			var s:String = "";
-			var c:String;
 			
 			var i:int;
 			var j:int;
