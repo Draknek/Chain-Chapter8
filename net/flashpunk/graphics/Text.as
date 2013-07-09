@@ -52,7 +52,7 @@
 		
 		public var stringLength:int;
 		
-		public var textDelay:int = 2;
+		public static var textDelay:int = 1;
 		public var delay:int;
 		
 		/**
@@ -115,7 +115,7 @@
 			_form.align = _align;
 			_form.leading = _leading;
 			_field.defaultTextFormat = _form;
-			_field.text = "";
+			_field.text = text;
 			stringLength = 0;
 			delay = textDelay;
 			_width = width || _field.textWidth + 4;
@@ -275,6 +275,10 @@
 		public override function update ():void
 		{
 			if (stringLength >= _text.length) return;
+			
+			if (textDelay == 0) {
+				stringLength = _text.length;
+			}
 			
 			delay--;
 			

@@ -13,7 +13,7 @@ package
 		public var tv:RetroTV;
 		public function Main () 
 		{
-			super(210, 160, 60, true);
+			super(200, 154, 60, true);
 			
 			FP.screen.color = 0x0;
 			
