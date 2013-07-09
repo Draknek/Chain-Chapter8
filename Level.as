@@ -199,6 +199,8 @@ package
 		
 		public function initMap ():void
 		{
+			waitTime = -1;
+			
 			player = new Point;
 			
 			grid = levels[selected].map.split("\n");
@@ -220,8 +222,6 @@ package
 					}
 				}
 			}
-			
-			waitTime = -1;
 		}
 		
 		public function wait (delay:int, nextCallback:Function):void
@@ -233,6 +233,10 @@ package
 		
 		public function update_moveoncedie ():void
 		{
+			if (waitTime == -1) {
+				addText("Subject emerged in poor condition");
+				waitTime = 1;
+			}
 			if (update_normal()) {
 				wait(30, update_die);
 			}
@@ -240,11 +244,12 @@ package
 		
 		public function update_staggerdie ():void
 		{
-			if (waitTime == -1) {
-				waitTime = 15;
-			}
-			
 			if (Input.pressed(Key.LEFT) || Input.pressed(Key.RIGHT) || Input.pressed(Key.UP) || Input.pressed(Key.DOWN)) {
+				if (waitTime == -1) {
+					waitTime = 10;
+					addText("Subject experienced severe\nnausea and disorientation");
+				}
+			
 				var dx:int;
 				var dy:int;
 				
@@ -271,7 +276,7 @@ package
 			
 			updateGrid();
 			
-			addText("Subject destabilised: report ends");
+			addText("Subject lost: report ends");
 			
 			choices.push(addText("Continue?"));
 			selected = 0;

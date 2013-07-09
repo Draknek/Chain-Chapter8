@@ -19,8 +19,8 @@ TEST-000782-1989-12-13
 |     |
 +--*--+
 :staggerdie
-Gestation period: 14y, 5m, 3d
-Download time: 8w, 1d
+Gestation period: 12y, 9m, 6d
+Download time: 7w, 3d
 
 TEST-014263-1992-03-22
 +-----+
