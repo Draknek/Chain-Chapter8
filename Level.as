@@ -29,11 +29,16 @@ package
 		public var choices:Array = [];
 		public var selected:int = 0;
 		
+		public var preventSkip:Boolean;
+		
 		public var t:int;
 		
 		public var map:Text;
 		public var grid:Array;
 		public var player:Point;
+		public var playerCallback:Function;
+		public var waitTime:int;
+		public var nextPlayerCallback:Function;
 		
 		public var hum:Sfx;
 		public var hum2:Sfx;
@@ -75,12 +80,8 @@ package
 				data.name = levelString.substring(0, i);
 				data.map = levelString.substring(i+1, j-1);
 				data.comments = levelString.substring(k+1);
-				
-				data.grid = data.map.split("\n");
-				
-				for (i = 0; i < data.grid.length; i++) {
-					data.grid[i] = data.grid[i].replace("@", "C").split("");
-				}
+				var callbackName:String = levelString.substring(j+1, k);
+				data.callback = this["update_" + callbackName];
 				
 				levels.push(data);
 			}
@@ -151,15 +152,20 @@ package
 					return;
 				}
 				
-				doPlayerInput();
+				playerCallback();
 			}
 			
 			if (toAdd.length || ! lastIsDone) {
-				if (Input.pressed(Key.SPACE)) {
+				if (! preventSkip && Input.pressed(Key.SPACE)) {
 					Text.textDelay = 0;
 				}
+				
+				preventSkip = false;
+				
 				return;
 			}
+			
+			preventSkip = false;
 			
 			Text.textDelay = 1;
 			
@@ -181,7 +187,7 @@ package
 				if (Input.pressed(Key.SPACE) || Input.pressed(Key.ENTER)) {
 					choices[selected].visible = true;
 					map = addText(levels[selected].map);
-					grid = levels[selected].grid;
+					playerCallback = levels[selected].callback;
 					initMap();
 					addText(levels[selected].comments);
 					choices.length = 0;
@@ -195,12 +201,19 @@ package
 		{
 			player = new Point;
 			
+			grid = levels[selected].map.split("\n");
+			
+			for (i = 0; i < grid.length; i++) {
+				grid[i] = grid[i].split("");
+			}
+			
 			var i:int;
 			var j:int;
 			
 			for (j = 0; j < grid.length; j++) {
 				for (i = 0; i < grid[j].length; i++) {
-					if (grid[j][i] == "C") {
+					if (grid[j][i] == "@") {
+						grid[j][i] = "C";
 						player.x = i;
 						player.y = j;
 						return;
@@ -209,25 +222,90 @@ package
 			}
 		}
 		
-		public static const solid:String = "|-+*";
+		public function wait (delay:int, nextCallback:Function):void
+		{
+			playerCallback = update_wait;
+			waitTime = delay;
+			nextPlayerCallback = nextCallback;
+		}
 		
-		public function doPlayerInput ():void
+		public function update_moveoncedie ():void
+		{
+			if (update_normal()) {
+				wait(30, update_die);
+			}
+		}
+		
+		public function update_staggerdie ():void
+		{
+			
+		}
+		
+		public function update_die ():void
+		{
+			grid[player.y][player.x] = "x";
+			player.x = player.y = -1;
+			
+			updateGrid();
+			
+			addText("Subject destabilised: report ends");
+			
+			choices.push(addText("Continue?"));
+			
+			playerCallback = update_gameover;
+		}
+		
+		public function update_gameover ():void
+		{
+			if (Input.pressed(Key.SPACE) || Input.pressed(Key.ENTER)) {
+				map = null;
+				addLevelChoice();
+				preventSkip = true;
+			}
+		}
+		
+		public function update_wait ():void
+		{
+			waitTime--;
+			
+			if (waitTime < 0 && nextPlayerCallback != null) {
+				playerCallback = nextPlayerCallback;
+			}
+		}
+		
+		public function update_normal ():Boolean
 		{
 			var dx:int = int(Input.pressed(Key.RIGHT)) - int(Input.pressed(Key.LEFT));
 			var dy:int = int(Input.pressed(Key.DOWN)) - int(Input.pressed(Key.UP));
 			
-			if (dx && dy) return;
+			return move(dx, dy);
+		}
+		
+		public static const solid:String = "|-+*";
+		
+		public function move (dx:int, dy:int):Boolean
+		{
+			if (!dx && !dy) return false;
+			if (dx && dy) return false;
 			
 			var ix:int = player.x + dx;
 			var iy:int = player.y + dy;
 			
 			var c:String = grid[iy][ix];
 			
-			if (solid.indexOf(c) >= 0) return;
+			if (solid.indexOf(c) >= 0) return false;
 			
 			player.x = ix;
 			player.y = iy;
 			
+			updateGrid();
+			
+			return true;
+		}
+		
+		public function updateGrid ():void
+		{
+			var c:String;
 			var s:String = "";
 			
 			var i:int;
