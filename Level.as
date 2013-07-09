@@ -28,6 +28,8 @@ package
 		
 		public var t:int;
 		
+		public var playing:Boolean;
+		
 		public function Level ()
 		{
 			add(new Player());
@@ -68,8 +70,19 @@ package
 			return new Text(s, 0, 0, {color: 0xd2f6a9});
 		}
 		
+		public function addText (s:String):Text
+		{
+			var text:Text = makeText(s);
+			
+			toAdd.push(text);
+			
+			return text;
+		}
+		
 		public function addLevelChoice ():void
 		{
+			addText("The following sessions have been\nmarked for review:");
+			
 			var i:int;
 			
 			choices.length = 0;
@@ -109,7 +122,18 @@ package
 				}
 			}
 			
-			if (toAdd.length == 0 && lastIsDone && choices.length) {
+			if (toAdd.length || ! lastIsDone) return;
+			
+			if (playing) {
+				if (Input.pressed(Key.ESCAPE)) {
+					playing = false;
+					addText("Report interrupted");
+					addLevelChoice();
+					return;
+				}
+			}
+			
+			if (choices.length) {
 				if (Input.pressed(Key.UP)) {
 					choices[selected].visible = true;
 					selected--;
@@ -131,6 +155,7 @@ package
 					FP.log(rest.length);
 					toAdd.push(makeText(rest));
 					choices.length = 0;
+					playing = true;
 				} else {
 					choices[selected].visible = ((t % 60) >= 30);
 				}
