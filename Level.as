@@ -11,6 +11,8 @@ package
 	{
 		[Embed(source="audio/sfx.swf#hum")] public static const HumSfx: Class;
 		
+		[Embed(source="audio/sfx.swf#hum2")] public static const Hum2Sfx: Class;
+		
 		[Embed(source="intro.txt", mimeType="application/octet-stream")]
 		public static const IntroTxt: Class;
 		
@@ -30,6 +32,9 @@ package
 		
 		public var playing:Boolean;
 		
+		public var hum:Sfx;
+		public var hum2:Sfx;
+		
 		public function Level ()
 		{
 			add(new Player());
@@ -42,8 +47,13 @@ package
 			
 			addLevelChoice();
 			
-			var hum:Sfx = new Sfx(HumSfx);
+			/*hum = new Sfx(HumSfx);
 			hum.loop();
+			hum.volume = 0;*/
+			
+			hum2 = new Sfx(Hum2Sfx);
+			hum2.loop();
+			hum2.volume = 2;
 		}
 		
 		public function loadLevels ():void
@@ -116,13 +126,20 @@ package
 				lastIsDone = false;
 			}
 			
-			if (lastText.y + lastText.textHeight > FP.height) {
+			while (lastText.y + lastText.textHeight > FP.height) {
 				for each (var text:Text in textList) {
 					text.y -= 10;
 				}
 			}
 			
-			if (toAdd.length || ! lastIsDone) return;
+			if (toAdd.length || ! lastIsDone) {
+				if (Input.pressed(Key.SPACE)) {
+					Text.textDelay = 0;
+				}
+				return;
+			}
+			
+			Text.textDelay = 1;
 			
 			if (playing) {
 				if (Input.pressed(Key.ESCAPE)) {

@@ -278,6 +278,7 @@
 			
 			if (textDelay == 0) {
 				stringLength = _text.length;
+				delay = 0;
 			}
 			
 			delay--;
