@@ -126,6 +126,7 @@
 			this.x = x;
 			this.y = y;
 			
+			stringLength = 0;
 			this.text = text;
 			active = true;
 			
@@ -403,8 +404,8 @@
 			}
 			
 			_text = value;
-			_field.text = "";
-			stringLength = 0;
+			_field.text = _text.substring(0, stringLength);
+			
 			if (_richText) {
 				_richText = null;
 				super.updateColorTransform();
