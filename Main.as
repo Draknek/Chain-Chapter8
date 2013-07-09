@@ -13,12 +13,12 @@ package
 		public var tv:RetroTV;
 		public function Main () 
 		{
-			super(200, 150, 60, true);
+			super(210, 160, 60, true);
 			
 			FP.screen.color = 0x0;
 			
 			Text.size = 16;
-			Text.defaultLeading = 2;
+			Text.defaultLeading = 0;
 			Text.font = "ProggyTiny";
 			
 			FP.world = new Level();

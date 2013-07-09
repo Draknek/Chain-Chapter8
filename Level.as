@@ -15,7 +15,15 @@ package
 		{
 			add(new Player());
 			
-			addGraphic(new Text("Chapter 8{WAIT20}\nLogging in{WAIT10}.{WAIT10}.{WAIT10}.{WAIT20}\n> @", 0, 0, {color: 0xd2f6a9}));
+			addGraphic(new Text(
+"Chapter 8{WAIT20}\nLogging in{WAIT10}.{WAIT10}.{WAIT10}.{WAIT20}\n> {WAIT20}chain\nWelcome back [legion].\nThe following sessions have been\nmarked for review:\nTEST-0043-1987-07-07\nTEST-000782-1989-12-13\nTEST-014263-1992-03-22\n\
++-----+\n\
+|O    |\n\
+|    #|\n\
+|C @  |\n\
+|     *\n\
+|0 . ~|\n\
++--*--+\n", 0, 0, {color: 0xd2f6a9}));
 			
 			var hum:Sfx = new Sfx(HumSfx);
 			hum.loop();
@@ -29,8 +37,6 @@ package
 		public override function render (): void
 		{
 			super.render();
-			
-			Draw.rect((Math.sin(0*0.001)+1) * FP.width*0.5, 50, 50, 50, 0xFF0000);
 		}
 	}
 }
