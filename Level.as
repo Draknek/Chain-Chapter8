@@ -220,6 +220,8 @@ package
 					}
 				}
 			}
+			
+			waitTime = -1;
 		}
 		
 		public function wait (delay:int, nextCallback:Function):void
@@ -238,7 +240,28 @@ package
 		
 		public function update_staggerdie ():void
 		{
+			if (waitTime == -1) {
+				waitTime = 15;
+			}
 			
+			if (Input.pressed(Key.LEFT) || Input.pressed(Key.RIGHT) || Input.pressed(Key.UP) || Input.pressed(Key.DOWN)) {
+				var dx:int;
+				var dy:int;
+				
+				if (Math.random() < 0.5) {
+					dx = (Math.random() < 0.5) ? -1 : 1;
+				} else {
+					dy = (Math.random() < 0.5) ? -1 : 1;
+				}
+				
+				move(dx, dy);
+				
+				waitTime--
+				
+				if (waitTime < 0) {
+					wait(30, update_die);
+				}
+			}
 		}
 		
 		public function update_die ():void
@@ -251,6 +274,7 @@ package
 			addText("Subject destabilised: report ends");
 			
 			choices.push(addText("Continue?"));
+			selected = 0;
 			
 			playerCallback = update_gameover;
 		}
@@ -258,6 +282,7 @@ package
 		public function update_gameover ():void
 		{
 			if (Input.pressed(Key.SPACE) || Input.pressed(Key.ENTER)) {
+				choices[selected].visible = true;
 				map = null;
 				addLevelChoice();
 				preventSkip = true;
