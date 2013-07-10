@@ -153,6 +153,10 @@ package
 				}
 				
 				playerCallback();
+				
+				if (t % 30 == 0) {
+					updateGrid((t % 60) < 30);
+				}
 			}
 			
 			if (toAdd.length || ! lastIsDone) {
@@ -330,10 +334,12 @@ package
 			
 			updateGrid();
 			
+			t = 0;
+			
 			return true;
 		}
 		
-		public function updateGrid ():void
+		public function updateGrid (showPlayer:Boolean = true):void
 		{
 			var c:String;
 			var s:String = "";
@@ -343,7 +349,7 @@ package
 			
 			for (j = 0; j < grid.length; j++) {
 				for (i = 0; i < grid[j].length; i++) {
-					if (player.x == i && player.y == j) {
+					if (showPlayer && player.x == i && player.y == j) {
 						c = "@";
 					} else {
 						c = grid[j][i];
