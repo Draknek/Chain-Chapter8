@@ -371,7 +371,7 @@ package
 				waitTime = 1;
 			}
 			if (update_normal()) {
-				deathMessage = "Subject collapsed within seconds of activation\nCause: severe brain hemorrhaging";
+				deathMessage = "Subject collapsed immediately upon leaving gestation tube\nCause: severe brain hemorrhaging";
 				wait(30, update_die);
 			}
 		}
