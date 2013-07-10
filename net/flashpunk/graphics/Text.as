@@ -385,24 +385,6 @@
 		{
 			if (_text == value && !_richText) return;
 			
-			var i:int = 0;
-			var j:int = 0;
-			
-			while ((i = value.indexOf("{WAIT", i)) != -1) {
-				j = value.indexOf("}", i);
-				var wait:int = int(value.substring(i+5, j));
-				var after:String = value.substring(j+1);
-				value = value.substring(0, i);
-				
-				for (j = 0; j < wait; j++) {
-					value += "\uFEFF";
-				}
-				
-				value += after;
-				
-				i += wait;
-			}
-			
 			_text = value;
 			_field.text = _text.substring(0, stringLength);
 			

@@ -40,6 +40,8 @@ package
 		public var waitTime:int;
 		public var nextPlayerCallback:Function;
 		
+		public var deathMessage:String;
+		
 		public var hum:Sfx;
 		public var textSfx:Sfx;
 		public var inputSfx:Sfx;
@@ -92,6 +94,54 @@ package
 		
 		public static function makeText (s:String):Text
 		{
+			var i:int = 0;
+			var j:int = 0;
+			
+			const waitChar:String = "\uFEFF";
+			
+			while ((i = s.indexOf("{WAIT", i)) != -1) {
+				j = s.indexOf("}", i);
+				var wait:int = int(s.substring(i+5, j));
+				var after:String = s.substring(j+1);
+				s = s.substring(0, i);
+				
+				for (j = 0; j < wait; j++) {
+					s += waitChar;
+				}
+				
+				s += after;
+				
+				i += wait;
+			}
+			
+			var max:int = 33;
+			
+			var length:int = 0;
+			var lastSpace:int = -1;
+			
+			for (i = 0; i < s.length; i++) {
+				var c:String = s.charAt(i);
+				if (c == waitChar) {
+					continue;
+				}
+				if (c == "\n") {
+					length = 0;
+					lastSpace = -1;
+					continue;
+				}
+				if (c == " ") {
+					lastSpace = i;
+				}
+				
+				length++;
+				
+				if (length > max && lastSpace > 0) {
+					s = s.substring(0, lastSpace) + "\n" + s.substring(lastSpace+1);
+					length -= lastSpace + 1;
+					lastSpace = -1;
+				}
+			}
+			
 			return new Text(s, 0, 0, {color: 0xd2f6a9});
 		}
 		
@@ -106,7 +156,7 @@ package
 		
 		public function addLevelChoice ():void
 		{
-			addText("The following sessions have been\nmarked for review:");
+			addText("The following sessions have been marked for review:");
 			
 			var i:int;
 			
@@ -249,10 +299,10 @@ package
 		public function update_moveoncedie ():void
 		{
 			if (waitTime == -1) {
-				addText("Subject emerged in poor condition");
 				waitTime = 1;
 			}
 			if (update_normal()) {
+				deathMessage = "Subject collapsed within seconds of activation\nTransfer failed, brain incompatible\nReport ends";
 				wait(30, update_die);
 			}
 		}
@@ -264,7 +314,7 @@ package
 				
 				if (waitTime == -1) {
 					waitTime = 10;
-					addText("Subject experienced severe\nnausea and disorientation");
+					addText("Subject experienced severe nausea and disorientation");
 				}
 			
 				var dx:int;
@@ -293,9 +343,15 @@ package
 			
 			updateGrid();
 			
-			addText("Subject lost: report ends");
+			if (deathMessage) {
+				addText(deathMessage);
+			} else {
+				addText("Subject lost: report ends");
+			}
 			
-			choices.push(addText("Continue?"));
+			deathMessage = null;
+			
+			choices.push(addText("Back"));
 			selected = 0;
 			
 			playerCallback = update_gameover;
@@ -358,6 +414,7 @@ package
 		
 		public function updateGrid (showPlayer:Boolean = true):void
 		{
+			if (! map) return;
 			var c:String;
 			var s:String = "";
 			
