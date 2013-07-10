@@ -50,6 +50,8 @@ package
 		public var inputSfx:Sfx;
 		public var moveSfx:Sfx;
 		
+		public var ending:Boolean = false;
+		
 		public function Level ()
 		{
 			add(new Player());
@@ -168,6 +170,11 @@ package
 			choices.length = 0;
 			selected = 0;
 			
+			if (! levels.length) {
+				ending = true;
+				return;
+			}
+			
 			for (i = 0; i < levels.length; i++) {
 				var text:Text = makeText(levels[i].name);
 				
@@ -176,6 +183,10 @@ package
 			}
 		}
 		
+		public var chainDigits:int = 7;
+		public var chainFirstDigit:int = 0;
+		public var endingAmount:Number = 1;
+		
 		public override function update (): void
 		{
 			super.update();
@@ -183,6 +194,35 @@ package
 			t++;
 			
 			var lastIsDone:Boolean = lastText.stringLength >= lastText.text.length;
+			
+			if (ending && lastIsDone && toAdd.length == 0) {
+				Text.textAtOnce = endingAmount;
+				
+				endingAmount += 0.2;
+				
+				chainFirstDigit += FP.rand(2)+1;
+				
+				if (chainFirstDigit >= 10) {
+					chainDigits += 1;
+					chainFirstDigit = FP.rand(2)+1;
+				}
+				
+				var chainID:String = ""+chainFirstDigit;
+				
+				while (chainID.length < Math.min(chainDigits,22)) {
+					chainID += FP.rand(10);
+				}
+				
+				if (chainDigits > 25) {
+					Text.textDelay = 2;
+					Text.textAtOnce = 1;
+					ending = false;
+					addText("NEW: CHAI{WAIT90}\nConnection lost");
+					choices.length = 0;
+				} else {
+					addText("NEW: CHAIN-" + chainID);
+				}
+			}
 			
 			if (toAdd.length && lastIsDone) {
 				var newText:Text = toAdd.shift();

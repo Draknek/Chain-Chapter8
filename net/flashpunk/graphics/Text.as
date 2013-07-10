@@ -53,6 +53,7 @@
 		public var stringLength:int;
 		
 		public static var textDelay:int = 1;
+		public static var textAtOnce:int = 1;
 		public var delay:int;
 		
 		/**
@@ -286,7 +287,7 @@
 			
 			if (delay < 0) {
 				delay = textDelay;
-				stringLength++;
+				stringLength += textAtOnce;
 				
 				_field.text = _text.substring(0, stringLength);
 				updateTextBuffer();
