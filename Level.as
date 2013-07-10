@@ -472,6 +472,18 @@ package
 			playerCallback = update_gameover;
 		}
 		
+		public function update_win ():void
+		{
+			addText("Subject interfaced with terminal");
+			
+			levels.splice(selected, 1);
+			
+			choices.push(addText("Mark report as read"));
+			selected = 0;
+			
+			playerCallback = update_gameover;
+		}
+		
 		public function update_gameover ():void
 		{
 			if (Input.pressed(Key.SPACE) || Input.pressed(Key.ENTER)) {
@@ -521,6 +533,10 @@ package
 			player.y = iy;
 			
 			t = 0;
+			
+			if (c == "#") {
+				playerCallback = update_win;
+			}
 			
 			return true;
 		}
