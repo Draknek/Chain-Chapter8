@@ -208,6 +208,11 @@ package
 				
 				playerCallback();
 				
+				if (player.x == 0 || player.y == 0) {
+					deathMessage = "Subject automatically neutralised by containment procedures";
+					playerCallback = update_die;
+				}
+				
 				if (t % 30 == 0) {
 					updateGrid((t % 60) < 30);
 				}
@@ -232,20 +237,22 @@ package
 			Text.textDelay = 1;
 			
 			if (choices.length) {
-				if (Input.pressed(Key.UP)) {
-					choices[selected].visible = true;
-					selected--;
-					if (selected < 0) selected = 0;
-					t = 0;
-					inputSfx.play();
-				}
-				
-				if (Input.pressed(Key.DOWN)) {
-					choices[selected].visible = true;
-					selected++;
-					if (selected >= choices.length) selected = choices.length - 1;
-					t = 0;
-					inputSfx.play();
+				if (choices.length > 1) {
+					if (Input.pressed(Key.UP)) {
+						choices[selected].visible = true;
+						selected--;
+						if (selected < 0) selected = 0;
+						t = 0;
+						inputSfx.play();
+					}
+					
+					if (Input.pressed(Key.DOWN)) {
+						choices[selected].visible = true;
+						selected++;
+						if (selected >= choices.length) selected = choices.length - 1;
+						t = 0;
+						inputSfx.play();
+					}
 				}
 				
 				if (Input.pressed(Key.SPACE) || Input.pressed(Key.ENTER)) {
@@ -333,6 +340,49 @@ package
 				if (waitTime < 0) {
 					wait(30, update_die);
 				}
+			}
+		}
+		
+		public function update_leanonwalls ():void
+		{
+			var nextToWall:Boolean = false;
+			
+			var ix:int = player.x;
+			var iy:int = player.y;
+			
+			var i:int;
+			var j:int;
+			
+			for (j = -1; j <= 1; j++) {
+				for (i = -1; i <= 1; i++) {
+					if (solid.indexOf(grid[iy+j][ix+i]) >= 0) {
+						nextToWall = true;
+						break;
+					}
+				}
+			}
+			
+			if (nextToWall) {
+				update_normal();
+			} else if (Input.pressed(Key.LEFT) || Input.pressed(Key.RIGHT) || Input.pressed(Key.UP) || Input.pressed(Key.DOWN)) {
+				
+				if (waitTime == -1) {
+					waitTime = 10;
+					addText("Subject heavily disoriented when not leaning on a wall for support");
+				}
+			
+				inputSfx.play();
+				
+				var dx:int;
+				var dy:int;
+				
+				if (Math.random() < 0.5) {
+					dx = (Math.random() < 0.5) ? -1 : 1;
+				} else {
+					dy = (Math.random() < 0.5) ? -1 : 1;
+				}
+				
+				move(dx, dy);
 			}
 		}
 		
