@@ -302,7 +302,7 @@ package
 				waitTime = 1;
 			}
 			if (update_normal()) {
-				deathMessage = "Subject collapsed within seconds of activation\nTransfer failed, brain incompatible\nReport ends";
+				deathMessage = "Subject collapsed within seconds of activation\nCause: severe brain hemorrhaging";
 				wait(30, update_die);
 			}
 		}
@@ -346,7 +346,7 @@ package
 			if (deathMessage) {
 				addText(deathMessage);
 			} else {
-				addText("Subject lost: report ends");
+				addText("Subject collapsed");
 			}
 			
 			deathMessage = null;
