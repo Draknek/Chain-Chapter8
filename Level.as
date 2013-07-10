@@ -39,6 +39,8 @@ package
 		public var playerCallback:Function;
 		public var waitTime:int;
 		public var nextPlayerCallback:Function;
+		public var enemies:Array;
+		public var enemyTimer:int;
 		
 		public var deathMessage:String;
 		
@@ -208,14 +210,14 @@ package
 				
 				playerCallback();
 				
+				updateEnemies();
+				
 				if (player.x == 0 || player.y == 0) {
 					deathMessage = "Subject automatically neutralised by containment procedures";
 					playerCallback = update_die;
 				}
 				
-				if (t % 30 == 0) {
-					updateGrid((t % 60) < 30);
-				}
+				updateGrid();
 			}
 			
 			if (toAdd.length || ! lastIsDone) {
@@ -257,10 +259,7 @@ package
 				
 				if (Input.pressed(Key.SPACE) || Input.pressed(Key.ENTER)) {
 					choices[selected].visible = true;
-					map = addText(levels[selected].map);
-					playerCallback = levels[selected].callback;
 					initMap();
-					addText(levels[selected].comments);
 					choices.length = 0;
 					inputSfx.play();
 				} else {
@@ -272,8 +271,16 @@ package
 		public function initMap ():void
 		{
 			waitTime = -1;
+			enemyTimer = 0;
 			
 			player = new Point;
+			
+			enemies = [];
+			
+			playerCallback = levels[selected].callback;
+			
+			map = addText(levels[selected].map.replace(/[<>^v]/g, "@"));
+			addText(levels[selected].comments);
 			
 			grid = levels[selected].map.split("\n");
 			
@@ -286,12 +293,64 @@ package
 			
 			for (j = 0; j < grid.length; j++) {
 				for (i = 0; i < grid[j].length; i++) {
-					if (grid[j][i] == "@") {
+					var c:String = grid[j][i];
+					if (c == "@") {
 						grid[j][i] = "C";
 						player.x = i;
 						player.y = j;
-						return;
+						continue;
 					}
+					if (c == ">" || c == "<" || c == "^" || c == "v") {
+						grid[j][i] = " ";
+						var enemy:Object = {}
+						enemy.x = i;
+						enemy.y = j;
+						enemy.dx = 0;
+						enemy.dy = 0;
+						if (c == ">") enemy.dx = 1;
+						else if (c == "<") enemy.dx = -1;
+						else if (c == "^") enemy.dy = -1;
+						else if (c == "v") enemy.dy = 1;
+						
+						enemies.push(enemy);
+					}
+				}
+			}
+		}
+		
+		public function updateEnemies ():void
+		{
+			enemyTimer++;
+			
+			if ((enemyTimer % 32) != 0) {
+				return;
+			}
+			
+			var enemy:*;
+			
+			for each (enemy in enemies) {
+				var ix:int = enemy.x;
+				var iy:int = enemy.y;
+				var dx:int = enemy.dx;
+				var dy:int = enemy.dy;
+				
+				if (! dx && ! dy) continue;
+				
+				if (solid.indexOf(grid[iy+dy][ix+dx]) >= 0) {
+					dx *= -1;
+					dy *= -1;
+					enemy.dx = dx;
+					enemy.dy = dy;
+				}
+				
+				enemy.x += dx;
+				enemy.y += dy;
+				
+				if (enemy.x == player.x && enemy.y == player.y) {
+					enemy.dx = enemy.dy = 0;
+					enemy.x = enemy.y = -1;
+					playerCallback = update_die;
+					deathMessage = "Subject contamination"
 				}
 			}
 		}
@@ -391,8 +450,6 @@ package
 			grid[player.y][player.x] = "x";
 			player.x = player.y = -1;
 			
-			updateGrid();
-			
 			if (deathMessage) {
 				addText(deathMessage);
 			} else {
@@ -455,18 +512,21 @@ package
 			player.x = ix;
 			player.y = iy;
 			
-			updateGrid();
-			
 			t = 0;
 			
 			return true;
 		}
 		
-		public function updateGrid (showPlayer:Boolean = true):void
+		public function updateGrid ():void
 		{
 			if (! map) return;
+			
+			var showPlayer:Boolean = (t % 60) < 30;
+			var showEnemy:Boolean = (enemyTimer % 16) < 8;
+			
 			var c:String;
 			var s:String = "";
+			var enemy:*;
 			
 			var i:int;
 			var j:int;
@@ -477,6 +537,14 @@ package
 						c = "@";
 					} else {
 						c = grid[j][i];
+						
+						if (showEnemy) {
+							for each (enemy in enemies) {
+								if (enemy.x == i && enemy.y == j) {
+									c = "@";
+								}
+							}
+						}
 					}
 					
 					s += c;
