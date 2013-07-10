@@ -461,7 +461,9 @@ package
 			
 			deathMessage = null;
 			
-			choices.push(addText("Back"));
+			levels.splice(selected, 1);
+			
+			choices.push(addText("Mark report as read"));
 			selected = 0;
 			
 			playerCallback = update_gameover;
