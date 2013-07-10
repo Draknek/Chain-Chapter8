@@ -13,6 +13,7 @@ package
 		[Embed(source="audio/sfx.swf#hum")] public static const HumSfx: Class;
 		[Embed(source="audio/sfx.swf#text")] public static const TextSfx: Class;
 		[Embed(source="audio/sfx.swf#input")] public static const InputSfx: Class;
+		[Embed(source="audio/sfx.swf#move")] public static const MoveSfx: Class;
 		
 		[Embed(source="intro.txt", mimeType="application/octet-stream")]
 		public static const IntroTxt: Class;
@@ -47,6 +48,7 @@ package
 		public var hum:Sfx;
 		public var textSfx:Sfx;
 		public var inputSfx:Sfx;
+		public var moveSfx:Sfx;
 		
 		public function Level ()
 		{
@@ -69,6 +71,7 @@ package
 			textSfx.volume = 2;
 			
 			inputSfx = new Sfx(InputSfx);
+			moveSfx = new Sfx(MoveSfx);
 		}
 		
 		public function loadLevels ():void
@@ -379,7 +382,7 @@ package
 		public function update_staggerdie ():void
 		{
 			if (Input.pressed(Key.LEFT) || Input.pressed(Key.RIGHT) || Input.pressed(Key.UP) || Input.pressed(Key.DOWN)) {
-				inputSfx.play();
+				moveSfx.play();
 				
 				if (waitTime == -1) {
 					waitTime = 10;
@@ -433,7 +436,7 @@ package
 					addText("Subject heavily disoriented when not leaning on a wall for support");
 				}
 			
-				inputSfx.play();
+				moveSfx.play();
 				
 				var dx:int;
 				var dy:int;
@@ -495,7 +498,7 @@ package
 			var dx:int = int(Input.pressed(Key.RIGHT)) - int(Input.pressed(Key.LEFT));
 			var dy:int = int(Input.pressed(Key.DOWN)) - int(Input.pressed(Key.UP));
 			
-			if (dx || dy) inputSfx.play();
+			if (dx || dy) moveSfx.play();
 			
 			return move(dx, dy);
 		}
