@@ -284,6 +284,9 @@ package
 			
 			grid = levels[selected].map.split("\n");
 			
+			map.setStyle("player", {color: 0xFFFFFF});
+			map.setStyle("enemy", {color: 0xFF2222});
+			
 			for (i = 0; i < grid.length; i++) {
 				grid[i] = grid[i].split("");
 			}
@@ -322,9 +325,7 @@ package
 		{
 			enemyTimer++;
 			
-			if ((enemyTimer % 32) != 0) {
-				return;
-			}
+			var doMove:Boolean = ((enemyTimer % 24) == 0);
 			
 			var enemy:*;
 			
@@ -336,15 +337,17 @@ package
 				
 				if (! dx && ! dy) continue;
 				
-				if (solid.indexOf(grid[iy+dy][ix+dx]) >= 0) {
-					dx *= -1;
-					dy *= -1;
-					enemy.dx = dx;
-					enemy.dy = dy;
+				if (doMove) {
+					if (solid.indexOf(grid[iy+dy][ix+dx]) >= 0) {
+						dx *= -1;
+						dy *= -1;
+						enemy.dx = dx;
+						enemy.dy = dy;
+					}
+					
+					enemy.x += dx;
+					enemy.y += dy;
 				}
-				
-				enemy.x += dx;
-				enemy.y += dy;
 				
 				if (enemy.x == player.x && enemy.y == player.y) {
 					enemy.dx = enemy.dy = 0;
@@ -447,7 +450,7 @@ package
 		
 		public function update_die ():void
 		{
-			grid[player.y][player.x] = "x";
+			grid[player.y][player.x] = "<player>x</player>";
 			player.x = player.y = -1;
 			
 			if (deathMessage) {
@@ -521,8 +524,8 @@ package
 		{
 			if (! map) return;
 			
-			var showPlayer:Boolean = (t % 60) < 30;
-			var showEnemy:Boolean = (enemyTimer % 16) < 8;
+			var showPlayer:Boolean = true;//(t % 60) < 30;
+			var showEnemy:Boolean = true;//(enemyTimer % 12) < 6;
 			
 			var c:String;
 			var s:String = "";
@@ -534,14 +537,14 @@ package
 			for (j = 0; j < grid.length; j++) {
 				for (i = 0; i < grid[j].length; i++) {
 					if (showPlayer && player.x == i && player.y == j) {
-						c = "@";
+						c = "<player>@</player>";
 					} else {
 						c = grid[j][i];
 						
 						if (showEnemy) {
 							for each (enemy in enemies) {
 								if (enemy.x == i && enemy.y == j) {
-									c = "@";
+									c = "<enemy>@</enemy>";
 								}
 							}
 						}
@@ -554,7 +557,7 @@ package
 			
 			s = s.substr(0, -1);
 			
-			map.text = s;
+			map.richText = s;
 		}
 		
 		public override function render (): void
