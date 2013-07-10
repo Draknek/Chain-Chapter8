@@ -187,13 +187,13 @@
 			if (warping) {
 				warpChange--;
 				
-				dmfilter.scaleX = distortScale*25*(0.5+0.5*Math.cos(getTimer()*0.001027+Math.cos(getTimer()*0.001324)))*(0.5+0.5*Math.cos(getTimer()*0.005227+Math.cos(getTimer()*0.072324)));
+				dmfilter.scaleX = distortScale*40*(0.5+0.5*Math.cos(getTimer()*0.001027+Math.cos(getTimer()*0.001324)))*(0.5+0.5*Math.cos(getTimer()*0.005227+Math.cos(getTimer()*0.072324)));
 				if (dmfilter.scaleX < 5) {
 					if (warpChange < 0) {
 						createDisplacementMap();
 					}
 					
-					dmfilter.scaleX = 5;
+					dmfilter.scaleX = 0;
 				}
 			}
 			
