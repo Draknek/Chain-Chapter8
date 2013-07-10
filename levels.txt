@@ -9,6 +9,7 @@ TEST-0043-1987-07-07
 :moveoncedie
 Gestation period: 14y, 5m, 3d
 Download time: 8w, 1d
+Subject successfully activated
 
 TEST-000782-1989-12-13
 +-----+

@@ -11,8 +11,8 @@ package
 	public class Level extends World
 	{
 		[Embed(source="audio/sfx.swf#hum")] public static const HumSfx: Class;
-		
-		[Embed(source="audio/sfx.swf#hum2")] public static const Hum2Sfx: Class;
+		[Embed(source="audio/sfx.swf#text")] public static const TextSfx: Class;
+		[Embed(source="audio/sfx.swf#input")] public static const InputSfx: Class;
 		
 		[Embed(source="intro.txt", mimeType="application/octet-stream")]
 		public static const IntroTxt: Class;
@@ -41,7 +41,8 @@ package
 		public var nextPlayerCallback:Function;
 		
 		public var hum:Sfx;
-		public var hum2:Sfx;
+		public var textSfx:Sfx;
+		public var inputSfx:Sfx;
 		
 		public function Level ()
 		{
@@ -55,13 +56,15 @@ package
 			
 			addLevelChoice();
 			
-			/*hum = new Sfx(HumSfx);
+			hum = new Sfx(HumSfx);
 			hum.loop();
-			hum.volume = 0;*/
+			hum.volume = 2;
 			
-			hum2 = new Sfx(Hum2Sfx);
-			hum2.loop();
-			hum2.volume = 2;
+			textSfx = new Sfx(TextSfx);
+			textSfx.loop();
+			textSfx.volume = 2;
+			
+			inputSfx = new Sfx(InputSfx);
 		}
 		
 		public function loadLevels ():void
@@ -149,6 +152,7 @@ package
 					map = null;
 					addText("Report interrupted");
 					addLevelChoice();
+					inputSfx.play();
 					return;
 				}
 				
@@ -164,10 +168,14 @@ package
 					Text.textDelay = 0;
 				}
 				
+				textSfx.volume = 2;
+				
 				preventSkip = false;
 				
 				return;
 			}
+			
+			textSfx.volume = 0;
 			
 			preventSkip = false;
 			
@@ -179,6 +187,7 @@ package
 					selected--;
 					if (selected < 0) selected = 0;
 					t = 0;
+					inputSfx.play();
 				}
 				
 				if (Input.pressed(Key.DOWN)) {
@@ -186,6 +195,7 @@ package
 					selected++;
 					if (selected >= choices.length) selected = choices.length - 1;
 					t = 0;
+					inputSfx.play();
 				}
 				
 				if (Input.pressed(Key.SPACE) || Input.pressed(Key.ENTER)) {
@@ -195,6 +205,7 @@ package
 					initMap();
 					addText(levels[selected].comments);
 					choices.length = 0;
+					inputSfx.play();
 				} else {
 					choices[selected].visible = ((t % 60) >= 30);
 				}
@@ -249,6 +260,8 @@ package
 		public function update_staggerdie ():void
 		{
 			if (Input.pressed(Key.LEFT) || Input.pressed(Key.RIGHT) || Input.pressed(Key.UP) || Input.pressed(Key.DOWN)) {
+				inputSfx.play();
+				
 				if (waitTime == -1) {
 					waitTime = 10;
 					addText("Subject experienced severe\nnausea and disorientation");
@@ -295,6 +308,8 @@ package
 				map = null;
 				addLevelChoice();
 				preventSkip = true;
+				
+				inputSfx.play();
 			}
 		}
 		
@@ -311,6 +326,8 @@ package
 		{
 			var dx:int = int(Input.pressed(Key.RIGHT)) - int(Input.pressed(Key.LEFT));
 			var dy:int = int(Input.pressed(Key.DOWN)) - int(Input.pressed(Key.UP));
+			
+			if (dx || dy) inputSfx.play();
 			
 			return move(dx, dy);
 		}

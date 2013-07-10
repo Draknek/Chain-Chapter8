@@ -6,8 +6,9 @@
 	<background color="#ffffff" />
 	<frame>
 		<library>
-			<sound id="hum" import="hum.wav" />
-			<sound id="hum2" import="hum2.wav" />
+			<sound id="hum" import="hum2.wav" />
+			<sound id="text" import="text.wav" />
+			<sound id="input" import="input.wav" />
 
 
 		</library>
