@@ -453,7 +453,7 @@ package
 		
 		public function update_die ():void
 		{
-			grid[player.y][player.x] = "<player>x</player>";
+			grid[player.y][player.x] = "<enemy>x</enemy>";
 			player.x = player.y = -1;
 			
 			if (deathMessage) {
