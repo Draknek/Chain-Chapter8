@@ -144,7 +144,8 @@ package
 				
 				if (length > max && lastSpace > 0) {
 					s = s.substring(0, lastSpace) + "\n" + s.substring(lastSpace+1);
-					length -= lastSpace + 1;
+					length = 0;
+					i = lastSpace;
 					lastSpace = -1;
 				}
 			}
@@ -514,7 +515,7 @@ package
 		
 		public function update_win ():void
 		{
-			addText("Subject interfaced with terminal");
+			addText("Subject passed all tests\nMarked for next generation");
 			
 			levels.splice(selected, 1);
 			
