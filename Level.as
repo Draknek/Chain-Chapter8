@@ -266,7 +266,7 @@ package
 			
 			if (toAdd.length || ! lastIsDone) {
 				if (! preventSkip && Input.pressed(Key.SPACE)) {
-					Text.textDelay = 0;
+					//Text.textDelay = 0;
 				}
 				
 				textSfx.volume = 2;

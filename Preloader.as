@@ -55,7 +55,7 @@ package
 			px = (sw - w) * 0.5;
 			py = (sh - h) * 0.5;
 			
-			sitelock(["draknek.org"]);
+			//sitelock(["draknek.org"]);
 			
 			graphics.beginFill(BG_COLOR);
 			graphics.drawRect(0, 0, sw, sh);
