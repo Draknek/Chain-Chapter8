@@ -1,4 +1,4 @@
 Chapter 8{WAIT20}
 Logging in{WAIT10}.{WAIT10}.{WAIT10}.{WAIT20}
-> {WAIT20}c{WAIT4}h{WAIT3}a{WAIT4}i{WAIT2}n
+> {WAIT20}c{WAIT8}h{WAIT7}a{WAIT9}i{WAIT3}n{WAIT5}
 Welcome back [legion].

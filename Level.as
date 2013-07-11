@@ -51,6 +51,7 @@ package
 		public var moveSfx:Sfx;
 		
 		public var ending:Boolean = false;
+		public var startEnding:Boolean = false;
 		
 		public function Level ()
 		{
@@ -164,17 +165,12 @@ package
 		
 		public function addLevelChoice ():void
 		{
-			addText("The following sessions have been marked for review:");
+			addText("The following reports have been marked for review:");
 			
 			var i:int;
 			
 			choices.length = 0;
 			selected = 0;
-			
-			if (! levels.length) {
-				ending = true;
-				return;
-			}
 			
 			for (i = 0; i < levels.length; i++) {
 				var text:Text = makeText(levels[i].name);
@@ -182,9 +178,13 @@ package
 				toAdd.push(text);
 				choices.push(text);
 			}
+			
+			if (startEnding || ! levels.length) {
+				ending = true;
+			}
 		}
 		
-		public var chainDigits:int = 7;
+		public var chainDigits:int = 8;
 		public var chainFirstDigit:int = 0;
 		public var endingAmount:Number = 1;
 		
@@ -490,6 +490,26 @@ package
 				
 				move(dx, dy);
 			}
+		}
+		
+		public function update_panic ():void
+		{
+			var i:int;
+			var j:int;
+			
+			for (j = 0; j < grid.length; j++) {
+				for (i = 0; i <grid[j].length; i++) {
+					if (grid[j][i] == "C") {
+						grid[j][i] = "<enemy>x</enemy>";
+					}
+				}
+			}
+			
+			deathMessage = "Switching to automatic reports";
+			
+			startEnding = true;
+			
+			playerCallback = update_die;
 		}
 		
 		public function update_die ():void

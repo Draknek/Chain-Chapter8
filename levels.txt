@@ -7,7 +7,7 @@ CHAIN-0043
 |     |
 +--*--+
 :moveoncedie
-Gestation period: 14y, 5m, 3d
+Gestation period: 4y, 5m, 3d
 Download time: 8w, 1d
 Subject successfully activated
 
@@ -20,7 +20,7 @@ CHAIN-000782
 |     |
 +--*--+
 :staggerdie
-Gestation period: 12y, 9m, 6d
+Gestation period: 1y, 9m, 6d
 Download time: 7w, 3d
 
 CHAIN-000811
@@ -32,9 +32,9 @@ CHAIN-000811
 |O    |     |    O|
 +-----+--*--+-----+
 :leanonwalls
-Gestation period: 12y, 9m, 6d
+Gestation period: 1y, 9m, 6d
 Download time: 7w, 3d
-Security protocols ignored
+Security breach: doors left open
 
 CHAIN-001275
 +-+-----+
@@ -45,10 +45,11 @@ CHAIN-001275
 |    @| |
 +-------+
 :normal
-Gestation period: 12y, 2m, 2d
-Download time: 5w, 6d
+Gestation period: 6m, 2d
+Download time: 4w, 6d
+Good progress: motor control is now retained by 95% of subjects
 
-CHAIN-001275
+CHAIN-006685
 +-----+
 |  @  |
 |     |
@@ -57,22 +58,11 @@ CHAIN-001275
 |  #  |
 +-----+
 :normal
-Gestation period: 12y, 2m, 2d
-Download time: 5w, 6d
+Gestation period: 3d 4h
+Download time: 23h
+Recent improvements in gestation time allow us to iterate faster and to repurpose culled hosts
 
-CHAIN-001275
-+-----+
-|  vv |
-|@    |
-+---  *
-|# v  |
-|     |
-+-----+
-:normal
-Gestation period: 12y, 2m, 2d
-Download time: 5w, 6d
-
-CHAIN-001275
+CHAIN-006932
 +-------+
 |@      |
 +--v    *
@@ -81,5 +71,46 @@ CHAIN-001275
 |      #|
 +-------+
 :normal
-Gestation period: 12y, 2m, 2d
-Download time: 5w, 6d
+Gestation period: 3d 4h
+Download time: 23h
+Further to previous reports, there is no evidence husk bodies experience sentience
+
+CHAIN-007040
++-----+
+|  vv |
+|@    |
++---  *
+|# v  |
+|     |
++-----+
+:normal
+Gestation period: 3d 4h
+Download time: 23h
+The storage of so many husks is beginning to be one of the primary challenges involved
+
+CHAIN-00029867
++----+ +---+
+|@   +-+ # |
+|          |
+|  +-+   +-+
++--+ +-*-+
+:normal
+Gestation period: 18h
+Download time: 12h
+With the two rapidly closening, one wonders what the mind would experience should gestation time ever fall below download time
+
+CHAIN-00408211
++-----+
+|@ @ @|
+|     |
+|@ @ @|
+|     |
+|@ @ @|
++-----+
+:panic
+Gestation period: 3h
+Download time: 2h
+Situation is dire: hosts are being grown faster than the system can handle
+Gestation tubes are clogged
+Failsafe system compromised
+I am compromised
