@@ -218,7 +218,7 @@ package
 					Text.textDelay = 2;
 					Text.textAtOnce = 1;
 					ending = false;
-					addText("NEW: CHAI{WAIT90}\nConnection lost");
+					addText("NEW: CHAI{WAIT90}\nConnection lost{WAIT30}\n\nEnd of chapter");
 					choices.length = 0;
 				} else {
 					addText("NEW: CHAIN-" + chainID);
