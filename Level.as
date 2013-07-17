@@ -187,6 +187,7 @@ package
 		public var chainDigits:int = 8;
 		public var chainFirstDigit:int = 0;
 		public var endingAmount:Number = 1;
+		public var canQuit:Boolean;
 		
 		public override function update (): void
 		{
@@ -210,18 +211,28 @@ package
 				
 				var chainID:String = ""+chainFirstDigit;
 				
-				while (chainID.length < Math.min(chainDigits,22)) {
+				while (chainID.length < chainDigits) {
 					chainID += FP.rand(10);
 				}
 				
-				if (chainDigits > 25) {
+				if (chainDigits > 33 - 11 + 3) {
 					Text.textDelay = 2;
 					Text.textAtOnce = 1;
 					ending = false;
+					canQuit = true;
 					addText("NEW: CHAI{WAIT90}\nConnection lost{WAIT30}\n\nEnd of chapter");
 					choices.length = 0;
 				} else {
-					addText("NEW: CHAIN-" + chainID);
+					toAdd.push(new Text("NEW: CHAIN-" + chainID, 0, 0, {color: 0xd2f6a9}));
+				}
+			}
+			
+			if (lastIsDone && toAdd.length == 0 && canQuit) {
+				if (Input.pressed(Key.SPACE) || Input.pressed(Key.ENTER)) {
+					try {
+						var NativeApplication:Class = getDefinitionByName("flash.desktop.NativeApplication") as Class;
+						NativeApplication.nativeApplication.exit();
+					} catch (e:Error) {}
 				}
 			}
 			
