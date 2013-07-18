@@ -53,6 +53,9 @@ package
 		public var ending:Boolean = false;
 		public var startEnding:Boolean = false;
 		
+		public static var lineLength:int = 33;
+		public static var linesHigh:int = 15;
+		
 		public function Level ()
 		{
 			add(new Player());
@@ -100,7 +103,7 @@ package
 			}
 		}
 		
-		public static function makeText (s:String):Text
+		public function makeText (s:String):Text
 		{
 			var i:int = 0;
 			var j:int = 0;
@@ -122,7 +125,7 @@ package
 				i += wait;
 			}
 			
-			var max:int = 33;
+			var max:int = lineLength;
 			
 			var length:int = 0;
 			var lastSpace:int = -1;
@@ -215,7 +218,7 @@ package
 					chainID += FP.rand(10);
 				}
 				
-				if (chainDigits > 33 - 11 + 3) {
+				if (chainDigits > lineLength - 11 + 3) {
 					Text.textDelay = 2;
 					Text.textAtOnce = 1;
 					ending = false;
