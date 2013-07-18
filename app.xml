@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+    <application xmlns="http://ns.adobe.com/air/application/3.4">
+
+    <id>org.draknek.chain.chapter8</id>
+    <versionNumber>1.0</versionNumber>
+    <filename>Chapter8</filename>
+    <name>Chapter 8</name>
+    <description></description>
+    <copyright>Alan Hazelden</copyright>
+
+    <initialWindow>
+    <title>Chapter 8</title>
+    <content>game.swf</content>
+    <systemChrome>standard</systemChrome>
+    <transparent>false</transparent>
+    <visible>true</visible>
+    <minimizable>false</minimizable>
+    <autoOrients>false</autoOrients>
+    <resizable>false</resizable>
+    <renderMode>cpu</renderMode>
+    <fullScreen>true</fullScreen>
+    <aspectRatio>landscape</aspectRatio>
+    </initialWindow>
+
+    <supportedProfiles>desktop extendedDesktop</supportedProfiles>
+
+    </application>

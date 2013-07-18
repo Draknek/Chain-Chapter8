@@ -46,8 +46,12 @@ package
 		{
 			Preloader.stage = this.stage;
 			
-			//stage.displayState = StageDisplayState["FULL_SCREEN_INTERACTIVE"];
-			//stage.scaleMode = StageScaleMode.NO_SCALE;
+			var url:String = stage.loaderInfo.url;
+			
+			if (url.substr(0, 5) == 'app:/') {
+				stage.displayState = StageDisplayState["FULL_SCREEN_INTERACTIVE"];
+				stage.scaleMode = StageScaleMode.NO_SCALE;
+			}
 			
 			sw = stage.stageWidth;
 			sh = stage.stageHeight;
