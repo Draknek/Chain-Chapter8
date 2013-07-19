@@ -80,10 +80,12 @@ package
 		{
 			if (Input.pressed(FP.console.toggleKey)) {
 				// Doesn't matter if it's called when already enabled
-				FP.console.enable();
+				//FP.console.enable();
 			}
 			
 			super.update();
+			
+			Input.mouseCursor = FP.focused ? "hide" : "auto";
 		}
 		
 		public override function render (): void

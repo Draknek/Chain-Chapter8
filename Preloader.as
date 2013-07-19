@@ -51,6 +51,8 @@ package
 			if (url.substr(0, 5) == 'app:/') {
 				stage.displayState = StageDisplayState["FULL_SCREEN_INTERACTIVE"];
 				stage.scaleMode = StageScaleMode.NO_SCALE;
+				
+				stage.addEventListener(KeyboardEvent.KEY_DOWN, preventEscape, false, 0, true);
 			}
 			
 			sw = stage.stageWidth;
@@ -64,23 +66,25 @@ package
 			
 			//sitelock(["draknek.org"]);
 			
-			graphics.beginFill(BG_COLOR);
-			graphics.drawRect(0, 0, sw, sh);
-			graphics.endFill();
-			
-			graphics.beginFill(FG_COLOR);
-			graphics.drawRect(px - 2, py - 2, w + 4, h + 4);
-			graphics.endFill();
-			
 			progressBar = new Shape();
-			
-			addChild(progressBar);
 			
 			text = makeText("O%", 16, "default", FG_COLOR);
 			text.x = (sw - text.width) * 0.5;
 			text.y = sh * 0.5 + h;
 			
-			addChild(text);
+			if (url.substr(0, 5) != 'app:/') {
+				graphics.beginFill(BG_COLOR);
+				graphics.drawRect(0, 0, sw, sh);
+				graphics.endFill();
+				
+				graphics.beginFill(FG_COLOR);
+				graphics.drawRect(px - 2, py - 2, w + 4, h + 4);
+				graphics.endFill();
+				
+				addChild(progressBar);
+				
+				addChild(text);
+			}
 			
 			stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			
@@ -88,7 +92,11 @@ package
 				stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 			}
 		}
-
+		
+		private function preventEscape(e:KeyboardEvent):void {
+			e.preventDefault();
+		}
+		
 		public function onEnterFrame (e:Event): void
 		{
 			if (hasLoaded())
