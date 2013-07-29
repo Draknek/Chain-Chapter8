@@ -48,12 +48,12 @@ package
 			
 			var url:String = stage.loaderInfo.url;
 			
-			if (url.substr(0, 5) == 'app:/') {
+			try {
 				stage.displayState = StageDisplayState["FULL_SCREEN_INTERACTIVE"];
 				stage.scaleMode = StageScaleMode.NO_SCALE;
-				
-				stage.addEventListener(KeyboardEvent.KEY_DOWN, preventEscape, false, 0, true);
-			}
+			} catch (e:Error) {}
+			
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, preventEscape, false, 0, true);
 			
 			sw = stage.stageWidth;
 			sh = stage.stageHeight;
